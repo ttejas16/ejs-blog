@@ -1,0 +1,31 @@
+<section class=" border-[1.5px] border-black p-8 w-full flex gap-x-6">
+    <div class="w-[65%]">
+        <div class="font-medium flex gap-x-2">
+            
+            <p><%= blog.published_date %></p>
+            •
+            <% if(blog.blog_body) {%>
+                <p><%= Math.ceil(blog.blog_body?.split(" ").length / 80) %>min read</p>
+                <% }else { %>
+                    <p>0 min read</p>
+            <% } %> 
+            •
+            <p><%= blog.no_of_likes %> likes</p>
+        </div>
+        <div class="py-2">
+            <a  draggable="false"
+                class="text-2xl font-medium cursor-pointer underline underline-offset-2"
+                href="/blogs/<%= blog.blog_id%>">
+                <%= blog.blog_title %>
+            </a>
+        </div>
+        <div class="text-xl font-normal line-clamp-3">
+            <%- blog.blog_body -%>
+        </div>
+    </div>
+    <% if(blog.blog_image_blob?.length > 0) { %>
+        <div class="w-[35%] h-fit">
+            <img src="<%= blog.blog_image_blob %>" alt="" class="object-cover w-full h-full max-h-full max-w-full">
+        </div>
+    <% } %>
+</section>

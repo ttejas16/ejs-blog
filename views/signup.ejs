@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login</title>
+    </head>
+    <body>
+        <%- include('navbar',{ auth: isAuthenticated }); -%>
+        <section class="flex justify-center pt-12 text-lg">
+            <form
+                class="border-2 w-[24%] border-black py-[4em] px-[3.5em] flex flex-col justify-start items-center gap-y-7
+                shadow-[rgb(0,0,0)_8px_8px]"
+                action="/auth/signup"
+                method="POST"
+            >
+                <p class="text-2xl font-bold">Create An Account</p>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter email"
+                    required
+                    autocomplete="off"
+                    minlength="8"
+                    class="border-b-2 p-1 w-[90%] outline-none border-neutral-800"
+                />
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                    minlength="8"
+                    class="border-b-2 p-1 w-[90%] outline-none border-neutral-800"
+                />
+
+                <button
+                    class="bg-black w-[70%] p-[0.5em] text-white mt-4"
+                    type="submit"
+                >
+                    Sign Me Up!
+                </button>
+
+                <p>
+                    Already have an account...
+                    <span
+                        ><a href="/auth/login" class="underline font-medium"
+                            > Log In</a
+                        ></span
+                    >
+                </p>
+                <% if(messages.response) { %>  
+                    <strong> <%= messages.response %> </strong> 
+                <% } %>
+            </form>
+        </section>
+    </body>
+</html>

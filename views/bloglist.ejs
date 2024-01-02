@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs</title>
+</head>
+<body>
+    <%- include('navbar',{auth: isAuthenticated} ); %>
+    <section class="flex flex-col w-full justify-start items-center p-6 gap-x-6">
+        <div class="w-[60%] border-b-[2px] border-black text-center">
+            <h2 class="p-4 text-2xl">Blogs Written By You</h2>
+        </div>
+        <div class="w-[60%] p-6 flex flex-col justify-start items-center gap-y-3">
+            <% if(blogs.length == 0) { %>
+                <div class="border-[1.5px] border-black w-full py-20 flex justify-center items-center">
+                    <i class="fa fa-3x fa-search text-black"></i>
+                    <p class="px-6 text-xl">
+                        You are yet to write some Blogs
+                    </p>
+                    <a href="/user/create" class="text-xl font-semibold underline">Start Now</a>
+                </div>
+            <% } else { %>
+                <% for(const blog of blogs) { %>
+                    <%- include('compactBlog', { blog: blog }); %>
+                <% } %>
+            <% } %>
+
+        </div>
+    </section>
+</body>
+</html>

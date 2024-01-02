@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Title</title>
+        <link rel="stylesheet" href="/styles/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+    </head>
+    <body>
+        <section class="w-full p-10 flex justify-center items-start">
+            <div
+                class="w-[70%] border-[2px] shadow-[rgb(0,0,0)_6px_6px] border-black p-10 flex flex-col justify-start items-center"
+            >
+                <div class="flex gap-x-8 w-full">
+                    <% if( blog.blog_image_blob.length ){ %>
+                        <div class="w-[35%] h-[250px]">
+                            <img src="<%= blog.blog_image_blob %>" alt="" class="object-cover w-full h-full max-w-full max-h-full ">
+                        </div>
+                    <% } %>
+                    <div
+                        class="w-[65%] p-4 flex flex-col gap-y-2 max-h-[250px]">
+                        <p><%= blog.published_date %></p>
+                        <h1 class="text-3xl"><%= blog.blog_title %></h1>
+                        <h1 class="text-xl"><%= blog.blog_subtitle %></h1>
+                        <div class="flex gap-x-2 text-lg justify-start items-center">
+                            <p>• <%= blog.blog_category %></p>
+                            •
+                            <% if(blog.blog_body) {%>
+                                <p> <%= Math.ceil(blog.blog_body?.split(" ").length / 80) %>min read</p>
+                                <% }else { %>
+                                    <p> 0 min read</p>
+                            <% } %>
+                            <p id="blog-likes">• <%= blog.no_of_likes %> likes</p>
+                            <% if(isLiked) { %>
+                                <button 
+                                    class="text-3xl text-red-600 fa fa-heart">
+                                </button>
+                            <% } else{ %>
+                                <button 
+                                    class="text-3xl text-red-600 fa fa-heart-o">
+                                </button>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <hr class="h-[1px] border-gray-400 w-full mt-8">
+                <div class="w-full p-6 text-xl">
+                    <%- blog.blog_body -%>
+                </div>
+                <% if( canDelete ) { %>
+                    <form action="/user/delete/<%= blog.blog_id %>" method="post" class="self-start">
+                        <button class="bg-black text-white text-lg rounded-sm mt-4 px-3 py-1 cursor-pointer">
+                            Delete this blog
+                        </button>
+                    </form>
+                <% } %>
+
+                <% if(message.response) { %>
+                    <p class="text-lg py-4 self-start"><%= message.response %></p>
+                <% } %>
+            </div>
+        </section>
+        <script>
+            const likeButton = document.querySelector("button");
+
+            likeButton.addEventListener("click",async (e) => {
+                const path = window.location.pathname;
+                const lastIndex = path.lastIndexOf("/");
+                const blog_id = parseInt(path.slice(lastIndex + 1));
+                const likes = document.querySelector('#blog-likes');
+                const likeNumber = parseInt(likes.innerHTML.slice(2));
+                
+                const url = `http://localhost:3000/user/like/${blog_id}`; 
+                
+                try {
+                    const rawRes = await fetch(url,{ method: 'PATCH' });
+                    
+                    if (!rawRes.ok) {
+                        const origin = window.location.origin;
+                        window.location = origin + "/auth/login";
+                        return;
+                    }
+
+                    const result = await rawRes.json();
+                    const wasLiked = result.toggle_like;
+
+                    if (wasLiked) {
+                        likes.innerHTML = `• ${likeNumber - 1} likes`;
+
+                        likeButton.classList.remove("fa-heart");
+                        likeButton.classList.remove("animate-like");
+
+                        likeButton.classList.add("fa-heart-o");
+                    }
+                    else{
+                        likes.innerHTML = `• ${likeNumber + 1} likes`;
+
+                        likeButton.classList.remove("fa-heart-o");
+
+                        likeButton.classList.add("fa-heart");
+                        likeButton.classList.add("animate-like");
+                    }
+
+                } catch (error) {
+                    console.log(error);   
+                }
+            });
+        </script>
+    </body>
+</html>

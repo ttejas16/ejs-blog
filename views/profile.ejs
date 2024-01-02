@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <%- include('navbar',{auth: isAuthenticated} ); -%>
+    <div class="flex justify-center items-center pt-20">
+        <div class="w-[50%] flex justify-center items-center border-2 ">
+            <div class=" h-[290px] w-[290px] border-2 border-black rounded-full">
+                <img src="/profile.jpg" alt="img" class="rounded-full w-full h-full object-cover">
+            </div>
+            <div class="px-10 py-6 font-medium text-xl flex flex-col gap-y-5">
+               <p class="border-b-2 border-neutral-400 w-max"> Username - <%- profile.email %> </p> 
+               <p class="border-b-2 border-neutral-400 w-max"> Email - <%- profile.username %> </p> 
+               <p class="border-b-2 border-neutral-400 w-max"> Bio - <%- profile.username %> </p> 
+            </div>
+        </div>
+    </div>
+</body>
+</html>

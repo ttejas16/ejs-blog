@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <%- include('navbar',{auth: isAuthenticated} ); -%>
+    <section class="flex w-full justify-start p-6 gap-x-6">
+        <div class="flex flex-col items-start gap-y-6 border-[2px] border-black shadow-[rgb(0,0,0)_6px_6px] w-[70%] p-6">
+            <div>
+                <h2 class="text-3xl font-bold">Something To Read</h2>
+            </div>
+            <% for(const blog of randomBlogs) { %>
+                <%- include('compactBlog',{ blog: blog }) -%>
+            <% } %>
+        </div>
+        <div class="w-[30%] h-fit flex flex-col justify-start items-center gap-y-8">
+
+            <div class="w-full border-[2px] border-black shadow-[rgb(0,0,0)_6px_6px]">
+                <form action="/search" method="get" class="flex">
+                    <input required type="text" name="q" id="" placeholder="Search for blogs" 
+                    class="px-5 py-4 w-full text-lg outline-none "> 
+                    <button type="submit" class="fa fa-lg fa-search pr-5 text-gray-700"></button>
+                </form>
+            </div>
+
+            <div class="flex flex-col w-full gap-y-4 border-[2px] border-black shadow-[rgb(0,0,0)_6px_6px] ">
+                <div class="p-5">
+                    <% if(!isAuthenticated) { %>
+                        <div class="border-[1.5px] flex flex-col justify-center items-start gap-y-2 border-black p-8 w-full h-full">
+                            <h2 class="text-3xl font-medium">Start Reading And Writing</h2>
+                            <p>Share your ideas all over the globe!</p>
+                            <a href="/auth/login" class="bg-black text-white px-3 py-2 rounded-sm">
+                                Get Started
+                            </a>
+                        </div>
+                    <% } else { %>
+                        <div class="border-[1.5px] flex flex-col justify-center items-start border-black h-full p-8 text-lg">
+                            <h1 class="py-3 text-xl font-semibold">Your Stats</h1>
+                            <div class="flex flex-col gap-y-1">
+                                <h3>Total Posts you made - 0</h3>
+                                <h3>Total Likes you received - 0</h3>
+                            </div>
+                            <div class="text-white text-lg py-2 flex gap-x-2">
+                                <a href="" class="bg-black px-3 py-2 rounded-sm">View Profile</a>
+                                <a href="/user/create" class="bg-black px-3 py-2 rounded-sm">Write Post</a>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="p-5">
+                    <h1 class="text-xl">Discover More About </h1>
+                    <div class="flex flex-wrap py-2 gap-2">
+                        <% for(const category of blogCategories){%>
+                            <%- include('button',{ category: category }) -%>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

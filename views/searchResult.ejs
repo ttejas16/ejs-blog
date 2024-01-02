@@ -1,0 +1,19 @@
+<section class=" border-[1.5px] border-black p-8 w-full flex gap-x-6">
+    <div class="w-full">
+        <div class="font-medium flex gap-x-2">
+            <p><%= blog.blog_category %></p>
+            •
+            <p><%= blog.no_of_likes %> likes</p>
+        </div>
+        <div class="py-2">
+            <a  draggable="false"
+                class="text-2xl font-medium cursor-pointer underline underline-offset-2"
+                href="/blogs/<%= blog.blog_id%>">
+                <%= blog.blog_title %>
+            </a>
+        </div>
+        <div class="text-xl font-normal line-clamp-3">
+            <%- blog.blog_subtitle -%>
+        </div>
+    </div>
+</section>
