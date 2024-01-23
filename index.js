@@ -79,6 +79,11 @@ app.get('/search', async (req, res) => {
         categoryFlag = false;
     }
 
+    if(!queryText){
+        res.status(404).render('error');
+        return;
+    }
+
     if (queryText.length != 0) {
         try {
             var client = await pool.connect();
@@ -117,19 +122,26 @@ app.get('/blogs/:id', verifyToken, async (req, res) => {
     let resultBlog = {};
     let isLiked = false;
 
+    const id = Number(req.params.id);
+   
+    if (!id) {
+        res.status(404).render('error');
+        return;
+    }
+
     try {
         var client = await pool.connect();
 
         if (req.user.isAuthenticated) {
             const likeResult = await client.query("select * from like_lookup($1,$2);", [
                 req.user.profile.user_id,
-                req.params.id,
+                id,
             ]);
 
             isLiked = likeResult.rows[0]['is_liked'];
         }
 
-        const result = await client.query("select * from blog_lookup($1);", [req.params.id]);
+        const result = await client.query("select * from blog_lookup($1);", [id]);
         if (result.rowCount > 0) {
             resultBlog = result.rows[0];
             // console.log(Buffer.from(resultBlog.blog_image_blob).toString().slice(0,10));

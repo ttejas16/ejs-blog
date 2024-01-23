@@ -110,7 +110,7 @@ router.patch('/like/:id', async (req, res) => {
             id
         ])
         
-        res.status(404).json(result.rows[0]);
+        res.status(200).json(result.rows[0]);
         return;
 
 
